@@ -3,39 +3,37 @@ const http = require('http')
 
 const PORT = process.env.PORT || 3000
 
+// REQUIRED FOR RENDER
 http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' })
   res.end('Bot online')
-}).listen(PORT)
-
-console.log(`Web server running on port ${PORT}`)
+}).listen(PORT, () => {
+  console.log(`Web server running on port ${PORT}`)
+})
 
 function startBot() {
 
   console.log('========================')
   console.log('Starting bot...')
-  console.log('Host: VahinM.aternos.me')
-  console.log('Port: 36050')
-  console.log('Username: RenderBot')
   console.log('========================')
+
+  console.log('Creating bot instance...')
 
   const bot = mineflayer.createBot({
     host: 'VahinM.aternos.me',
     port: 36050,
     username: 'RenderBot',
 
-    // auto detect version
+    auth: 'offline',
     version: false,
 
-    // cracked server
-    auth: 'offline',
+    connectTimeout: 15000,
+    checkTimeoutInterval: 10000,
 
     hideErrors: false
   })
 
-  bot.on('inject_allowed', () => {
-    console.log('[EVENT] inject_allowed')
-  })
+  console.log('Bot instance created')
 
   bot.on('login', () => {
     console.log('[EVENT] login')
@@ -43,56 +41,32 @@ function startBot() {
 
   bot.on('spawn', () => {
     console.log('[EVENT] spawn')
-    console.log('Bot joined server successfully!')
+    console.log('Bot joined successfully')
 
     bot.chat('im online')
   })
 
-  bot.on('message', (jsonMsg) => {
-    console.log('[CHAT]', jsonMsg.toString())
+  bot.on('message', (msg) => {
+    console.log('[CHAT]', msg.toString())
   })
 
-  bot.on('kicked', (reason, loggedIn) => {
-    console.log('========================')
+  bot.on('kicked', (reason) => {
     console.log('[EVENT] kicked')
-    console.log('Logged in:', loggedIn)
-    console.log('Reason:', reason)
-    console.log('========================')
+    console.log(reason)
   })
 
   bot.on('end', (reason) => {
-    console.log('========================')
     console.log('[EVENT] end')
-    console.log('Disconnected reason:', reason)
-    console.log('Reconnecting in 10 seconds...')
-    console.log('========================')
+    console.log(reason)
 
-    setTimeout(() => {
-      startBot()
-    }, 10000)
+    console.log('Reconnecting in 10 seconds...')
+
+    setTimeout(startBot, 10000)
   })
 
   bot.on('error', (err) => {
-    console.log('========================')
     console.log('[EVENT] error')
     console.log(err)
-    console.log('========================')
-  })
-
-  bot.on('death', () => {
-    console.log('[EVENT] death')
-  })
-
-  bot.on('health', () => {
-    console.log('[EVENT] health update')
-  })
-
-  bot.on('playerJoined', (player) => {
-    console.log(`[EVENT] player joined: ${player.username}`)
-  })
-
-  bot.on('playerLeft', (player) => {
-    console.log(`[EVENT] player left: ${player.username}`)
   })
 }
 

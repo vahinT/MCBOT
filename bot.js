@@ -2,7 +2,7 @@ const mineflayer = require('mineflayer')
 const http = require('http')
 
 http.createServer((req, res) => {
-  res.write('Bot is running!')
+  res.write('Bot online')
   res.end()
 }).listen(process.env.PORT || 3000)
 
@@ -11,24 +11,32 @@ function createBot() {
   const bot = mineflayer.createBot({
     host: 'VahinM.aternos.me',
     port: 36050,
-    username: 'RenderBot'
+    username: 'RenderBot',
+    version: '1.21.6'
+  })
+
+  bot.on('login', () => {
+    console.log('Logged in')
   })
 
   bot.on('spawn', () => {
-    console.log('Bot joined!')
-    bot.chat('DO NOT KILL ME, OR ELSE VAHIN WILL BAN YOU, THIS IS NEEDED FOR 24/7 HOSTING')
+    console.log('Spawned')
+    bot.chat('render bot online')
+  })
+
+  bot.on('kicked', console.log)
+
+  bot.on('error', (err) => {
+    console.log(err)
   })
 
   bot.on('end', () => {
-    console.log('Disconnected. Reconnecting in 5 seconds...')
+    console.log('Disconnected')
 
     setTimeout(() => {
       createBot()
     }, 5000)
   })
-
-  bot.on('kicked', console.log)
-  bot.on('error', console.log)
 }
 
 createBot()

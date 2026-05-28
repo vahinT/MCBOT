@@ -20,7 +20,7 @@ function startBot() {
   console.log('Creating bot instance...')
 
   const bot = mineflayer.createBot({
-    host: 'VahinM.aternos.me',
+    host: 'jewelfish.aternos.host',
     port: 36050,
     username: 'RenderBot',
 

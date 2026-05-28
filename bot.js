@@ -1,28 +1,22 @@
 const mineflayer = require('mineflayer')
+const http = require('http')
+
+http.createServer((req, res) => {
+  res.write('Bot is running!')
+  res.end()
+}).listen(process.env.PORT || 3000)
 
 function createBot() {
 
   const bot = mineflayer.createBot({
     host: 'VahinM.aternos.me',
     port: 36050,
-    username: 'Bot'
+    username: 'RenderBot'
   })
 
   bot.on('spawn', () => {
     console.log('Bot joined!')
-    bot.chat('THE BOT JOINS (plz dont kill me, if u kill me vahin will ban u from the server) the bot is required for 24/7 aternos hosting')
-  })
-
-  bot.on('chat', (username, message) => {
-    if (username === bot.username) return
-
-    if (message === 'jump') {
-      bot.setControlState('jump', true)
-
-      setTimeout(() => {
-        bot.setControlState('jump', false)
-      }, 1000)
-    }
+    bot.chat('DO NOT KILL ME, OR ELSE VAHIN WILL BAN YOU, THIS IS NEEDED FOR 24/7 HOSTING')
   })
 
   bot.on('end', () => {

@@ -1,3 +1,4 @@
+
 const mineflayer = require('mineflayer')
 const http = require('http')
 
@@ -40,4 +41,3 @@ function startBot() {
 }
 
 startBot()
-
